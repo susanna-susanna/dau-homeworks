@@ -70,9 +70,13 @@ c. Столбчатую диаграмму или график, показыва
 a. Месяцы трат
 b. Категории трат
 
+---
 
 [Google-форма](https://docs.google.com/forms/d/e/1FAIpQLSelI6S_8mgSGIp7qRiGyquulbRdPtP4lLg71Gx0Ji8gSrpsMA/viewform)
+
 [Google-таблица](https://docs.google.com/spreadsheets/d/1W7HBbZy8PUpl9fNxwKXGzhVTLPr-AKfW9agJnJ15vtg/edit#gid=2003434644)
+
 [Google-форма.ред](https://docs.google.com/forms/d/1-NECg5ouA_stR_NZ5vHcYnbJHycksgvolNkoTKmvZ9I/edit)
+
 [Дашборд "Детализация трат"]() (добавить ссылку)
 
