@@ -30,6 +30,8 @@
 
 Сгруппируйте данные по категориям и вычислите суммарные затраты в каждой из них. Для этого воспользуйтесь командами groupby() и sum() по аналогии с тем, как мы делали на лекции.
 
+[Colab с занятия](https://colab.research.google.com/drive/10o00oPw771Ji27BZd0Il8lADD5QyQL8B?usp=sharing)
+
 ---
 
 [Python как инструмент анализа данных](https://colab.research.google.com/drive/16ac7aC0t-SziRZLGF6u5Oz2Lcf1C4DSU?usp=sharing)
