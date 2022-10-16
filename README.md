@@ -31,5 +31,7 @@
 #### Итоговая работа "SQL и получение данных"
 
 [Итоговая работа "SQL и получение данных". Задание](https://docs.google.com/document/d/1DD8Ev3xJUBonR3GC0ZsNSlvsSqgd4zXC3FKHvTd2k4o/edit)
+
 [Итоговая работа "SQL и получение данных". Описание](https://docs.google.com/document/d/1tA7j6HXiHlFGj40lWbKfv8MjyaicUkFzGxo-CAROYvM/edit)
+
 [Итоговая работа "SQL и получение данных". Запросы](summary-35-1.sql)
