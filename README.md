@@ -173,9 +173,9 @@
 * Разбить данные на множество для обучения и для проверки, отобрав признаки для обучения модели классификации (убрать номер телефона, код региона, признаки планов + все добавленные аттрибуты)
 * Обучить какую-нибудь модель классификации и оценить качество (точность) на отложенной выборке
 
-[Решение Pandas.ipynb](https://colab.research.google.com/drive/1ZOPPGA0jC5E55GB6zymKDC3r4ctfUbVW)
+[Решение Pandas.ipynb](https://colab.research.google.com/drive/15o2g9kcKqRF6VSePWGjEI7KcplGtglw_#scrollTo=lPxbwNdRxuAO)
 
-[Решение PySpark.ipynb](https://colab.research.google.com/drive/1D81jr7xJrS1k6Nn6ryO7a1Ab5L6OuaG9)
+[Решение PySpark.ipynb](https://colab.research.google.com/drive/1PKEhc2Kxle5_LbTAbsM2D2Nhf5PnbTS8#scrollTo=hyqp4QNuxP-S)
 
 #### Итоговая работа "Big Data c нуля"
 
