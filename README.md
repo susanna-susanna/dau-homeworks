@@ -18,7 +18,7 @@
 
 ## Модуль "SQL и получение данных" (SQL)
 
-[Работа с базами данных](hw-2-working with DB.sql)
+[Работа с базами данных](https://github.com/susanna-susanna/dau-homeworks/blob/main/hw-2-working%20with%20DB.sql)
 
 [Основы SQL](HW-1-3-sql-basw.sql) 
 
