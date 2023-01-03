@@ -52,7 +52,7 @@
 
 [Итоговая_задание_теоретическая_часть](https://docs.google.com/document/d/1G-6zw0lG2CRhb80rAUpReL_MZazF9X1S_ouMl2W4wqQ/edit#)
 
-Python для анализа данных(PYDA)
+## Модуль "Python для анализа данных" (PYDA)
 
 [Основы Python](hw_1_Основы_Python.ipynb)
 
