@@ -52,7 +52,9 @@
 
 [Итоговая_задание_теоретическая_часть](https://docs.google.com/document/d/1G-6zw0lG2CRhb80rAUpReL_MZazF9X1S_ouMl2W4wqQ/edit#)
 
-## Модуль "Python для анализа данных" (PYDA)
+## Модуль "Python для анализа данных" 
+
+PYDA
 
 [Основы Python](hw_1_Основы_Python.ipynb)
 
@@ -69,3 +71,15 @@
 [Понятие класса](hw_7_Понятие_класса.ipynb)
 
 [Регулярные выражения и основы синтаксического разбора](hw8_regex.ipynb)
+
+NUMPY
+
+[Библиотека numpy. Вычислительные задачи](https://github.com/susanna-susanna/dau-python/blob/main/numpy_1_%D0%91%D0%B8%D0%B1%D0%BB%D0%B8%D0%BE%D1%82%D0%B5%D0%BA%D0%B0_numpy_%D0%92%D1%8B%D1%87%D0%B8%D1%81%D0%BB%D0%B8%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5_%D0%B7%D0%B0%D0%B4%D0%B0%D1%87%D0%B8.ipynb)
+
+[Библиотека Pandas](https://github.com/susanna-susanna/dau-python/blob/main/numpy_2_%D0%91%D0%B8%D0%B1%D0%BB%D0%B8%D0%BE%D1%82%D0%B5%D0%BA%D0%B0_Pandas.ipynb)
+
+[Функции и работа с данными](https://github.com/susanna-susanna/dau-python/blob/main/numpy_3_%D0%A4%D1%83%D0%BD%D0%BA%D1%86%D0%B8%D0%B8_%D0%B8_%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%B0_%D1%81_%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D0%BC%D0%B8.ipynb)
+
+[Продвинутый pandas](https://github.com/susanna-susanna/dau-python/blob/main/nampy_4_%D0%9F%D1%80%D0%BE%D0%B4%D0%B2%D0%B8%D0%BD%D1%83%D1%82%D1%8B%D0%B9_pandas.ipynb)
+
+[Основы веб-скрапинга](https://github.com/susanna-susanna/dau-python/blob/main/numpy_5_%D0%9E%D1%81%D0%BD%D0%BE%D0%B2%D1%8B_%D0%B2%D0%B5%D0%B1_%D1%81%D0%BA%D1%80%D0%B0%D0%BF%D0%B8%D0%BD%D0%B3%D0%B0.ipynb)
