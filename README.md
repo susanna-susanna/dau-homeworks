@@ -72,6 +72,8 @@ PYDA
 
 [Регулярные выражения и основы синтаксического разбора](hw8_regex.ipynb)
 
+## Библиотеки Python для анализа данных
+
 NUMPY
 
 [Библиотека numpy. Вычислительные задачи](https://github.com/susanna-susanna/dau-python/blob/main/numpy_1_%D0%91%D0%B8%D0%B1%D0%BB%D0%B8%D0%BE%D1%82%D0%B5%D0%BA%D0%B0_numpy_%D0%92%D1%8B%D1%87%D0%B8%D1%81%D0%BB%D0%B8%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5_%D0%B7%D0%B0%D0%B4%D0%B0%D1%87%D0%B8.ipynb)
@@ -83,3 +85,27 @@ NUMPY
 [Продвинутый pandas](https://github.com/susanna-susanna/dau-python/blob/main/nampy_4_%D0%9F%D1%80%D0%BE%D0%B4%D0%B2%D0%B8%D0%BD%D1%83%D1%82%D1%8B%D0%B9_pandas.ipynb)
 
 [Основы веб-скрапинга](https://github.com/susanna-susanna/dau-python/blob/main/numpy_5_%D0%9E%D1%81%D0%BD%D0%BE%D0%B2%D1%8B_%D0%B2%D0%B5%D0%B1_%D1%81%D0%BA%D1%80%D0%B0%D0%BF%D0%B8%D0%BD%D0%B3%D0%B0.ipynb)
+
+## Статистика в Python 
+
+STPY
+
+[Базовые_понятия_статистики_выбросы,_пустоты,_IQR](https://github.com/susanna-susanna/dau-stpy/blob/main/stpy_1_Базовые_понятия_статистики_выбросы%2C_пустоты%2C_IQR.ipynb)
+
+[Визуализация](https://github.com/susanna-susanna/dau-stpy/blob/main/stpy_2_Визуализация.ipynb)
+
+[Случайные_события_Случайные_величины](https://github.com/susanna-susanna/dau-stpy/blob/main/stpy_3_Случайные_события_Случайные_величины.ipynb)
+
+[Корреляция_и_корреляционный_анализ](https://github.com/susanna-susanna/dau-stpy/blob/main/stpy_4_Корреляция_и_корреляционный_анализ%22.ipynb)
+
+[Задачи_классификации_и_кластеризации](https://github.com/susanna-susanna/dau-stpy/blob/main/stpy_5_Задачи_классификации_и_кластеризации.ipynb)
+
+[Основы_статистического_анализа](https://github.com/susanna-susanna/dau-stpy/blob/main/stpy_6_Основы_статистического_анализа.ipynb)
+
+[case_study](https://github.com/susanna-susanna/dau-stpy/blob/main/stpy_8_case_study.ipynb)
+
+# [Итоговая_работа_по_курсу_"Python_для_анализа_данных"](https://github.com/susanna-susanna/dau-stpy/blob/main/pydp_Итоговая_работа_по_курсу_%22Python_для_анализа_данных%22.ipynb)
+
+
+# [Итоговая аттестация профессии "Аналитик Данных"](https://github.com/susanna-susanna/dau-stpy/tree/main/pydp-diplome)
+
