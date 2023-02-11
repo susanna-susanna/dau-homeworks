@@ -109,3 +109,7 @@ STPY
 
 # [Итоговая аттестация профессии "Аналитик Данных"](https://github.com/susanna-susanna/dau-stpy/tree/main/pydp-diplome)
 
+---
+
+[Практика в Tableau](https://public.tableau.com/app/profile/liliya2641)
+
