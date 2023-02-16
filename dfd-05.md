@@ -6,6 +6,6 @@
 
 [Google-таблица](https://docs.google.com/spreadsheets/d/1_5QlkslhSrItS9Ir2R1rXOiX7ehZXFc8Lu0x1BmpKP4/edit#gid=526847455)
 
-[Data Studio](https://datastudio.google.com/u/0/reporting/e1cebcc1-dcfc-4605-9509-9f8d543d46c4/page/5n78B) (прикрпить ссылку)
+[Data Studio](https://datastudio.google.com/u/0/reporting/e1cebcc1-dcfc-4605-9509-9f8d543d46c4/page/5n78B) (прикрепить ссылку)
 
 [Google Colab](https://colab.research.google.com/drive/1YW8LbF-QUpln-HUBk58ElTx7n1RZoXmC?usp=sharing#scrollTo=yZiM7XUmCXF3)
