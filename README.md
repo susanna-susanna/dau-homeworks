@@ -90,6 +90,8 @@ NUMPY
 
 STPY
 
+Не вся визуализация корректно отображается здесь, на GitHub. На всех файлах прикреплена ссылка на Colaboratory, чтоб можно было перейти и посмотреть продвинутую визуализацию
+
 [Базовые_понятия_статистики_выбросы,_пустоты,_IQR](https://github.com/susanna-susanna/dau-stpy/blob/main/stpy_1_Базовые_понятия_статистики_выбросы%2C_пустоты%2C_IQR.ipynb)
 
 [Визуализация](https://github.com/susanna-susanna/dau-stpy/blob/main/stpy_2_Визуализация.ipynb)
