@@ -22,7 +22,7 @@
 
 [Данные для задания](https://docs.google.com/spreadsheets/d/1Jm7eGkDwovc-LaGTiqxz59q5yyO_pciJjwSIkNtW_ck/edit#gid=0)
 
-[AIC_ДЗ2_Финансовые_метрики](https://drive.google.com/file/d/1EEvLItR2-xlpDrQTRMhFHHrbW89vyIlP/view)
+[AIC_ДЗ2_Финансовые_метрики](https://docs.google.com/spreadsheets/d/1nmZLssMDxvoeuGu0cBDSLNYeA1y9UmfYbxBLrd4qkvI/edit#gid=795742999)
 
 ### Иерархия метрик
 
@@ -69,7 +69,7 @@ Canvas строим в сервисе [canvanizer.com](https://canvanizer.com/)
 HADI, инструменты и план проверки – в Google таблицах
 
 [Canvas](https://canvanizer.com/canvas/rdS0PSd60UTBy)
-[HADI, инструменты и план проверки](https://drive.google.com/file/d/1OGhykgx_80ZXNPJO-VcydN0YFVpHPZqu/view)
+[HADI, инструменты и план проверки](https://docs.google.com/spreadsheets/d/1nmZLssMDxvoeuGu0cBDSLNYeA1y9UmfYbxBLrd4qkvI/edit#gid=766137)
 
 ### Финальная работа (AIC)
 
