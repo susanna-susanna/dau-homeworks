@@ -24,7 +24,6 @@
 * 3-4 таблицы измерений (описание, что там лежит + столбцы)
 * Прислать в виде google-документа или ER-диаграммы с комментариями
 
-[Мотивация и технологии работы с большими данными]()
 [online терминал mongodb](https://www.mongodb.com/docs/manual/tutorial/getting-started/)
 
 [HADOOP & SPARK](https://docs.google.com/document/d/1j36AuXR8Klassu80DvM7m6WOLTCfVuR3k0Xx9-mdDgw/edit)
