@@ -71,7 +71,7 @@ HADI, инструменты и план проверки – в Google табл
 [Canvas](https://canvanizer.com/canvas/rdS0PSd60UTBy)
 [HADI, инструменты и план проверки](https://docs.google.com/spreadsheets/d/1nmZLssMDxvoeuGu0cBDSLNYeA1y9UmfYbxBLrd4qkvI/edit#gid=766137)
 
-### Финальная работа (AIC)
+### Итоговая работа (AIC)
 
 Цель задания
 Основная задача аналитика – уметь быстро “погружаться” в данные.
@@ -105,5 +105,6 @@ HADI, инструменты и план проверки – в Google табл
 Отчёт опирается на исходные данные.
 Данные описаны; определена система метрик; сформулированы выводы и рекомендации.
 
-[AIC-25_А.Сусанна](https://docs.google.com/document/d/12B8paYsNBTxsGrPeTWTL6R6oXiIUmpEazY9lhYPaR8A/edit#)
+[AIC-25_Итоговая работа](https://docs.google.com/document/d/12B8paYsNBTxsGrPeTWTL6R6oXiIUmpEazY9lhYPaR8A/edit#)
 
+[Colaboratory](https://colab.research.google.com/drive/1kGL-jU70QEVmNT48CAFm5IWQs9wESW7j#scrollTo=l0Pu6ahb-vNX)
