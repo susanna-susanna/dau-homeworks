@@ -20,6 +20,7 @@
 
 [Colaboratory](https://colab.research.google.com/drive/1kGL-jU70QEVmNT48CAFm5IWQs9wESW7j#scrollTo=l0Pu6ahb-vNX)
 
+[Отчёт в Tableau (с фильтрами и динамическим Top N)](https://public.tableau.com/app/profile/liliya2641/viz/AIC_16774389387890/sheet2_1)
 
 ## Модуль "SQL и получение данных" (SQL)
 
