@@ -1,5 +1,7 @@
 # Аналитик данных (dau-homeworks)
 
+waterliliya634@gmail.com
+
 ## Модуль "Аналитическое мышление" (DFD)
 
 [Работа с Google-формой и Google-таблицами](dfd-01.md)
