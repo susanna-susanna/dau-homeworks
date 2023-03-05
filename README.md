@@ -112,6 +112,10 @@ STPY
 
 ## [Итоговая_работа_по_курсу_"Python_для_анализа_данных"](https://github.com/susanna-susanna/dau-stpy/blob/main/pydp_Итоговая_работа_по_курсу_%22Python_для_анализа_данных%22.ipynb)
 
+Не вся визуализация корректно отображаетсяв репозитории. Нужно смотреть Colab
+
+## [Colab_Итоговая_работа_по_курсу_Python_для_анализа_данных](https://colab.research.google.com/drive/1KNBfedE-WKYM0t9rWt5glpqz-sNLYexB)
+
 
 # [Итоговая аттестация профессии "Аналитик Данных"](https://github.com/susanna-susanna/dau-stpy/tree/main/pydp-diplome)
 
