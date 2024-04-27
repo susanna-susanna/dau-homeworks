@@ -1,131 +1,146 @@
---=============== МОДУЛЬ 5. РАБОТА С POSTGRESQL =======================================
---= ПОМНИТЕ, ЧТО НЕОБХОДИМО УСТАНОВИТЬ ВЕРНОЕ СОЕДИНЕНИЕ И ВЫБРАТЬ СХЕМУ PUBLIC===========
+--=============== РњРћР”РЈР›Р¬ 5. Р РђР‘РћРўРђ РЎ POSTGRESQL =======================================
+--= РџРћРњРќРРўР•, Р§РўРћ РќР•РћР‘РҐРћР”РРњРћ РЈРЎРўРђРќРћР’РРўР¬ Р’Р•Р РќРћР• РЎРћР•Р”РРќР•РќРР• Р Р’Р«Р‘Р РђРўР¬ РЎРҐР•РњРЈ PUBLIC===========
 SET search_path TO public;
 
---======== ОСНОВНАЯ ЧАСТЬ ==============
+--======== РћРЎРќРћР’РќРђРЇ Р§РђРЎРўР¬ ==============
 
---ЗАДАНИЕ №1
---Сделайте запрос к таблице payment и с помощью оконных функций добавьте вычисляемые колонки согласно условиям:
---Пронумеруйте все платежи от 1 до N по дате
---Пронумеруйте платежи для каждого покупателя, сортировка платежей должна быть по дате
---Посчитайте нарастающим итогом сумму всех платежей для каждого покупателя, сортировка должна 
---быть сперва по дате платежа, а затем по сумме платежа от наименьшей к большей
---Пронумеруйте платежи для каждого покупателя по стоимости платежа от наибольших к меньшим 
---так, чтобы платежи с одинаковым значением имели одинаковое значение номера.
---Можно составить на каждый пункт отдельный SQL-запрос, а можно объединить все колонки в одном запросе.
-
-select * from payment p 
-
-select customer_id, payment_id, payment_date, row_number() over (partition by customer_id order by payment_date)
-from payment p 
-
-with cte1 as (
-	select customer_id, payment_id, payment_date, row_number() over () as "нумеруем всё"
-	from payment p 
-), cte2 as (
-	select p.customer_id, p.payment_id, p.payment_date, "нумеруем всё", row_number() over (partition by p.customer_id order by p.payment_date) as "по юзеру"
-	from payment p 
-	left join cte1 on cte1.payment_id = p.payment_id
-), c3 as (
-	select 
-	p.customer_id, p.payment_id,  p.payment_date, "нумеруем всё", "по юзеру", p.amount, 
-	sum(p.amount) over (partition by p.customer_id order by p.payment_date) 
-	--sum(p.amount) over (partition by p.customer_id order by p.amount) as "по сумме"
-	from payment p
-	left join cte2 on cte2.payment_id = p.payment_id
-)
-select *,
-	dense_rank () over (partition by c3.customer_id order by c3.amount desc) as "ранг платежа"
-from c3
-
-
-
---ЗАДАНИЕ №2
---С помощью оконной функции выведите для каждого покупателя стоимость платежа и стоимость 
---платежа из предыдущей строки со значением по умолчанию 0.0 с сортировкой по дате.
-
-select
-	customer_id, payment_id,  payment_date, amount, lag (amount, 1, 0.) over (partition by customer_id order by payment_date)
-from payment p 
-
-
-
---ЗАДАНИЕ №3
---С помощью оконной функции определите, на сколько каждый следующий платеж покупателя больше или меньше текущего.
-
-select
-	customer_id, payment_id,  payment_date, amount, lead (amount, 1, 0.) over (partition by customer_id order by payment_date) - amount "разница"
-from payment p 
-
-
-
---ЗАДАНИЕ №4
---С помощью оконной функции для каждого покупателя выведите данные о его последней оплате аренды.
+--Р—РђР”РђРќРР• в„–1
+--РЎРґРµР»Р°Р№С‚Рµ Р·Р°РїСЂРѕСЃ Рє С‚Р°Р±Р»РёС†Рµ payment Рё СЃ РїРѕРјРѕС‰СЊСЋ РѕРєРѕРЅРЅС‹С… С„СѓРЅРєС†РёР№ РґРѕР±Р°РІСЊС‚Рµ РІС‹С‡РёСЃР»СЏРµРјС‹Рµ РєРѕР»РѕРЅРєРё СЃРѕРіР»Р°СЃРЅРѕ СѓСЃР»РѕРІРёСЏРј:
+--РџСЂРѕРЅСѓРјРµСЂСѓР№С‚Рµ РІСЃРµ РїР»Р°С‚РµР¶Рё РѕС‚ 1 РґРѕ N РїРѕ РґР°С‚Рµ РїР»Р°С‚РµР¶Р°
+--РџСЂРѕРЅСѓРјРµСЂСѓР№С‚Рµ РїР»Р°С‚РµР¶Рё РґР»СЏ РєР°Р¶РґРѕРіРѕ РїРѕРєСѓРїР°С‚РµР»СЏ, СЃРѕСЂС‚РёСЂРѕРІРєР° РїР»Р°С‚РµР¶РµР№ РґРѕР»Р¶РЅР° Р±С‹С‚СЊ РїРѕ РґР°С‚Рµ РїР»Р°С‚РµР¶Р°
+--РџРѕСЃС‡РёС‚Р°Р№С‚Рµ РЅР°СЂР°СЃС‚Р°СЋС‰РёРј РёС‚РѕРіРѕРј СЃСѓРјРјСѓ РІСЃРµС… РїР»Р°С‚РµР¶РµР№ РґР»СЏ РєР°Р¶РґРѕРіРѕ РїРѕРєСѓРїР°С‚РµР»СЏ, СЃРѕСЂС‚РёСЂРѕРІРєР° РґРѕР»Р¶РЅР° 
+--Р±С‹С‚СЊ СЃРїРµСЂРІР° РїРѕ РґР°С‚Рµ РїР»Р°С‚РµР¶Р°, Р° Р·Р°С‚РµРј РїРѕ СЂР°Р·РјРµСЂСѓ РїР»Р°С‚РµР¶Р° РѕС‚ РЅР°РёРјРµРЅСЊС€РµР№ Рє Р±РѕР»СЊС€РµР№
+--РџСЂРѕРЅСѓРјРµСЂСѓР№С‚Рµ РїР»Р°С‚РµР¶Рё РґР»СЏ РєР°Р¶РґРѕРіРѕ РїРѕРєСѓРїР°С‚РµР»СЏ РїРѕ СЂР°Р·РјРµСЂСѓ РїР»Р°С‚РµР¶Р° РѕС‚ РЅР°РёР±РѕР»СЊС€РµРіРѕ Рє
+--РјРµРЅСЊС€РµРјСѓ С‚Р°Рє, С‡С‚РѕР±С‹ РїР»Р°С‚РµР¶Рё СЃ РѕРґРёРЅР°РєРѕРІС‹Рј Р·РЅР°С‡РµРЅРёРµРј РёРјРµР»Рё РѕРґРёРЅР°РєРѕРІРѕРµ Р·РЅР°С‡РµРЅРёРµ РЅРѕРјРµСЂР°.
+--РњРѕР¶РЅРѕ СЃРѕСЃС‚Р°РІРёС‚СЊ РЅР° РєР°Р¶РґС‹Р№ РїСѓРЅРєС‚ РѕС‚РґРµР»СЊРЅС‹Р№ SQL-Р·Р°РїСЂРѕСЃ, Р° РјРѕР¶РЅРѕ РѕР±СЉРµРґРёРЅРёС‚СЊ РІСЃРµ РєРѕР»РѕРЅРєРё РІ РѕРґРЅРѕРј Р·Р°РїСЂРѕСЃРµ.
 
 select 
-	distinct customer_id, payment_id, payment_date, amount,
-	last_value(amount) over (partition by customer_id order by payment_date
-	rows between unbounded preceding and unbounded following) as "last amount",
-	last_value(payment_date) over (partition by customer_id order by payment_date
-	rows between unbounded preceding and unbounded following) as "last date"
+	*
+	, row_number () over (order by payment_date) rn_payment
+	, row_number () over (partition by customer_id order by payment_date) rn_by_customer
+	, sum(amount) over (partition by customer_id order by payment_date::date asc, amount desc) cummul_sum
+	, dense_rank() over (partition by customer_id order by amount desc)
 from payment
-group by customer_id, payment_id
-order by customer_id
 
-	
-select customer_id, payment_id, payment_date, amount 
-from (
-	select *, 
-		row_number() over (partition by customer_id order by payment_date desc)
-	from payment) t
-where row_number = 1	
 
---======== ДОПОЛНИТЕЛЬНАЯ ЧАСТЬ ==============
+--Р—РђР”РђРќРР• в„–2
+--РЎ РїРѕРјРѕС‰СЊСЋ РѕРєРѕРЅРЅРѕР№ С„СѓРЅРєС†РёРё РІС‹РІРµРґРёС‚Рµ РґР»СЏ РєР°Р¶РґРѕРіРѕ РїРѕРєСѓРїР°С‚РµР»СЏ СЃС‚РѕРёРјРѕСЃС‚СЊ РїР»Р°С‚РµР¶Р° Рё СЃС‚РѕРёРјРѕСЃС‚СЊ 
+--РїР»Р°С‚РµР¶Р° РёР· РїСЂРµРґС‹РґСѓС‰РµР№ СЃС‚СЂРѕРєРё СЃРѕ Р·РЅР°С‡РµРЅРёРµРј РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ 0.0 СЃ СЃРѕСЂС‚РёСЂРѕРІРєРѕР№ РїРѕ РґР°С‚Рµ РїР»Р°С‚РµР¶Р°.
 
---ЗАДАНИЕ №1
---С помощью оконной функции выведите для каждого сотрудника сумму продаж за август 2005 года 
---с нарастающим итогом по каждому сотруднику и по каждой дате продажи (без учёта времени) 
---с сортировкой по дате.
-
-select staff_id, payment_date::date, sum(amount), sum(sum(amount)) over (partition by staff_id order by payment_date::date) 
+select 
+	customer_id 
+	, amount 
+	, lag(amount, 1, 0.) over (partition by customer_id order by payment_date)  previous_amount
 from payment p 
-where date_trunc('Month', p.payment_date) = '2005-08-01 00:00:00'
-group by staff_id, payment_date::date
 
 
-select staff_id, payment_date::date, sum(amount), sum(sum(amount)) over (partition by staff_id order by payment_date::date) 
+
+--Р—РђР”РђРќРР• в„–3
+--РЎ РїРѕРјРѕС‰СЊСЋ РѕРєРѕРЅРЅРѕР№ С„СѓРЅРєС†РёРё РѕРїСЂРµРґРµР»РёС‚Рµ, РЅР° СЃРєРѕР»СЊРєРѕ РєР°Р¶РґС‹Р№ СЃР»РµРґСѓСЋС‰РёР№ РїР»Р°С‚РµР¶ РїРѕРєСѓРїР°С‚РµР»СЏ Р±РѕР»СЊС€Рµ РёР»Рё РјРµРЅСЊС€Рµ С‚РµРєСѓС‰РµРіРѕ.
+
+select 
+	customer_id 
+	, amount 
+	, lead(amount) over (partition by customer_id order by payment_date) next_payment
+	, lead(amount) over (partition by customer_id order by payment_date) - amount as differ
+from payment p
+
+--РµСЃР»Рё СЃР»РµРґСѓСЋС‰РµРµ Р·РЅР°С‡РµРЅРёРµ РѕС‚СЃС‚СѓС‚СЃС‚РІСѓРµС‚, С‚Рѕ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ РЅР°Р·Р°РЅС‡Р°РµРј 0.0
+select 
+	customer_id 
+	, amount 
+	, lead(amount, 1, 0.) over (partition by customer_id order by payment_date) - amount as differ
 from payment p 
-where date_trunc('Month', p.payment_date) = '2005-08-01 00:00:00'
-group by staff_id, payment_date::date
---ЗАДАНИЕ №2
---20 августа 2005 года в магазинах проходила акция: покупатель каждого сотого платежа получал
---дополнительную скидку на следующую аренду. С помощью оконной функции выведите всех покупателей,
---которые в день проведения акции получили скидку
 
-select customer_id 
-from (
-	select *, row_number() over (order by p.payment_date)
+
+
+--Р—РђР”РђРќРР• в„–4
+--РЎ РїРѕРјРѕС‰СЊСЋ РѕРєРѕРЅРЅРѕР№ С„СѓРЅРєС†РёРё РґР»СЏ РєР°Р¶РґРѕРіРѕ РїРѕРєСѓРїР°С‚РµР»СЏ РІС‹РІРµРґРёС‚Рµ РґР°РЅРЅС‹Рµ Рѕ РµРіРѕ РїРѕСЃР»РµРґРЅРµР№ РѕРїР»Р°С‚Рµ Р°СЂРµРЅРґС‹.
+with all_info as (
+	select  
+	customer_id
+	, payment_id
+	, payment_date
+	, amount
+	, last_value(amount) over (partition by customer_id order by payment_date
+	rows between unbounded preceding and unbounded following) as last_amount
+	, last_value(payment_date) over (partition by customer_id order by payment_date
+	rows between unbounded preceding and unbounded following) as last_date
+	from payment
+)
+select  
+	customer_id
+	, payment_id
+	, payment_date
+	, amount
+from all_info
+where payment_date = last_date
+	and amount = last_amount
+
+
+
+
+--======== Р”РћРџРћР›РќРРўР•Р›Р¬РќРђРЇ Р§РђРЎРўР¬ ==============
+
+--Р—РђР”РђРќРР• в„–1
+--РЎ РїРѕРјРѕС‰СЊСЋ РѕРєРѕРЅРЅРѕР№ С„СѓРЅРєС†РёРё РІС‹РІРµРґРёС‚Рµ РґР»СЏ РєР°Р¶РґРѕРіРѕ СЃРѕС‚СЂСѓРґРЅРёРєР° СЃСѓРјРјСѓ РїСЂРѕРґР°Р¶ Р·Р° Р°РІРіСѓСЃС‚ 2005 РіРѕРґР° 
+--СЃ РЅР°СЂР°СЃС‚Р°СЋС‰РёРј РёС‚РѕРіРѕРј РїРѕ РєР°Р¶РґРѕРјСѓ СЃРѕС‚СЂСѓРґРЅРёРєСѓ Рё РїРѕ РєР°Р¶РґРѕР№ РґР°С‚Рµ РїСЂРѕРґР°Р¶Рё (Р±РµР· СѓС‡С‘С‚Р° РІСЂРµРјРµРЅРё) 
+--СЃ СЃРѕСЂС‚РёСЂРѕРІРєРѕР№ РїРѕ РґР°С‚Рµ.
+
+select 
+distinct 
+staff_id 
+, payment_date::date 
+, sum(amount) over (partition by staff_id order by payment_date::date)
+, sum(amount) over (partition by staff_id)
+from payment p 
+where date_trunc('month', payment_date) = '2005-05-01'
+
+
+--Р—РђР”РђРќРР• в„–2
+--20 Р°РІРіСѓСЃС‚Р° 2005 РіРѕРґР° РІ РјР°РіР°Р·РёРЅР°С… РїСЂРѕС…РѕРґРёР»Р° Р°РєС†РёСЏ: РїРѕРєСѓРїР°С‚РµР»СЊ РєР°Р¶РґРѕРіРѕ СЃРѕС‚РѕРіРѕ РїР»Р°С‚РµР¶Р° РїРѕР»СѓС‡Р°Р»
+--РґРѕРїРѕР»РЅРёС‚РµР»СЊРЅСѓСЋ СЃРєРёРґРєСѓ РЅР° СЃР»РµРґСѓСЋС‰СѓСЋ Р°СЂРµРЅРґСѓ. РЎ РїРѕРјРѕС‰СЊСЋ РѕРєРѕРЅРЅРѕР№ С„СѓРЅРєС†РёРё РІС‹РІРµРґРёС‚Рµ РІСЃРµС… РїРѕРєСѓРїР°С‚РµР»РµР№,
+--РєРѕС‚РѕСЂС‹Рµ РІ РґРµРЅСЊ РїСЂРѕРІРµРґРµРЅРёСЏ Р°РєС†РёРё РїРѕР»СѓС‡РёР»Рё СЃРєРёРґРєСѓ
+
+with all_payments as (
+	select *
+	, row_number () over (order by payment_date) rn
 	from payment p 
-	where date_trunc('Day', p.payment_date) = '2005-08-20 00:00:00'
-	order by p.payment_date ) pr
-where row_number % 100 = 0
+	where payment_date::date = '2005-08-20'
+)
+select *
+from all_payments
+where rn % 100 = 0
 
-select customer_id 
-from (
-	select *, row_number() over (order by p.payment_date)
+--Р—РђР”РђРќРР• в„–3
+--Р”Р»СЏ РєР°Р¶РґРѕР№ СЃС‚СЂР°РЅС‹ РѕРїСЂРµРґРµР»РёС‚Рµ Рё РІС‹РІРµРґРёС‚Рµ РѕРґРЅРёРј SQL-Р·Р°РїСЂРѕСЃРѕРј РїРѕРєСѓРїР°С‚РµР»РµР№, РєРѕС‚РѕСЂС‹Рµ РїРѕРїР°РґР°СЋС‚ РїРѕРґ СѓСЃР»РѕРІРёСЏ:
+-- 1. РїРѕРєСѓРїР°С‚РµР»СЊ, Р°СЂРµРЅРґРѕРІР°РІС€РёР№ РЅР°РёР±РѕР»СЊС€РµРµ РєРѕР»РёС‡РµСЃС‚РІРѕ С„РёР»СЊРјРѕРІ
+-- 2. РїРѕРєСѓРїР°С‚РµР»СЊ, Р°СЂРµРЅРґРѕРІР°РІС€РёР№ С„РёР»СЊРјРѕРІ РЅР° СЃР°РјСѓСЋ Р±РѕР»СЊС€СѓСЋ СЃСѓРјРјСѓ
+-- 3. РїРѕРєСѓРїР°С‚РµР»СЊ, РєРѕС‚РѕСЂС‹Р№ РїРѕСЃР»РµРґРЅРёРј Р°СЂРµРЅРґРѕРІР°Р» С„РёР»СЊРј
+
+with general_ as (
+	select 
+		c3.country 
+		, c3.country_id 
+		, concat_ws(' ', c.first_name, c.last_name) customer  
+		, count(rental_id) over (partition by c3.country_id, p.customer_id) cnt_rental
+		, sum(amount) over (partition by c3.country_id, p.customer_id) sum_rental
+		, max(payment_date) over (partition by c3.country_id, p.customer_id) last_rental_date
 	from payment p 
-	where p.payment_date::date = '2005-08-20') t 
-where row_number % 100 = 0
-
-
---ЗАДАНИЕ №3
---Для каждой страны определите и выведите одним SQL-запросом покупателей, которые попадают под условия:
--- 1. покупатель, арендовавший наибольшее количество фильмов
--- 2. покупатель, арендовавший фильмов на самую большую сумму
--- 3. покупатель, который последним арендовал фильм
-
-
-
-
-
+	join customer c 
+		on p.customer_id = c.customer_id 
+	join address a 
+		on c.address_id = a.address_id 
+	join city c2 
+		on a.city_id = c2.city_id 
+	join country c3 
+		on c2.country_id = c3.country_id 
+)
+select distinct 
+	country 
+	, first_value (customer) over (partition by country_id order by cnt_rental desc) max_cnt_rental
+	, first_value (customer) over (partition by country_id order by sum_rental desc) max_sum_rental
+	, first_value (customer) over (partition by country_id order by last_rental_date desc) last_rental_date
+from general_ 
+order by country_id 
 
