@@ -1,136 +1,308 @@
---=============== МОДУЛЬ 6. POSTGRESQL =======================================
---= ПОМНИТЕ, ЧТО НЕОБХОДИМО УСТАНОВИТЬ ВЕРНОЕ СОЕДИНЕНИЕ И ВЫБРАТЬ СХЕМУ PUBLIC===========
+--=============== РњРћР”РЈР›Р¬ 6. POSTGRESQL =======================================
+--= РџРћРњРќРРўР•, Р§РўРћ РќР•РћР‘РҐРћР”РРњРћ РЈРЎРўРђРќРћР’РРўР¬ Р’Р•Р РќРћР• РЎРћР•Р”РРќР•РќРР• Р Р’Р«Р‘Р РђРўР¬ РЎРҐР•РњРЈ PUBLIC===========
 SET search_path TO public;
 
---======== ОСНОВНАЯ ЧАСТЬ ==============
+--======== РћРЎРќРћР’РќРђРЇ Р§РђРЎРўР¬ ==============
 
---ЗАДАНИЕ №1
---Напишите SQL-запрос, который выводит всю информацию о фильмах 
---со специальным атрибутом "Behind the Scenes".
+--Р—РђР”РђРќРР• в„–1
+--РќР°РїРёС€РёС‚Рµ SQL-Р·Р°РїСЂРѕСЃ, РєРѕС‚РѕСЂС‹Р№ РІС‹РІРѕРґРёС‚ РІСЃСЋ РёРЅС„РѕСЂРјР°С†РёСЋ Рѕ С„РёР»СЊРјР°С… 
+--СЃРѕ СЃРїРµС†РёР°Р»СЊРЅС‹Рј Р°С‚СЂРёР±СѓС‚РѕРј "Behind the Scenes".
 
+explain analyze
+--Seq Scan on film  (cost=0.00..67.50 rows=538 width=386) (actual time=0.013..0.402 rows=538 loops=1)
+--Planning time: 0.091 ms
+--Execution time: 0.437 ms
 select *
-from film 
+from film
 where  array['Behind the Scenes'] <@ special_features 
 
 
---ЗАДАНИЕ №2
---Напишите еще 2 варианта поиска фильмов с атрибутом "Behind the Scenes",
---используя другие функции или операторы языка SQL для поиска значения в массиве.
 
-select film_id, title, special_features
+
+--Р—РђР”РђРќРР• в„–2
+--РќР°РїРёС€РёС‚Рµ РµС‰Рµ 2 РІР°СЂРёР°РЅС‚Р° РїРѕРёСЃРєР° С„РёР»СЊРјРѕРІ СЃ Р°С‚СЂРёР±СѓС‚РѕРј "Behind the Scenes",
+--РёСЃРїРѕР»СЊР·СѓСЏ РґСЂСѓРіРёРµ С„СѓРЅРєС†РёРё РёР»Рё РѕРїРµСЂР°С‚РѕСЂС‹ СЏР·С‹РєР° SQL РґР»СЏ РїРѕРёСЃРєР° Р·РЅР°С‡РµРЅРёСЏ РІ РјР°СЃСЃРёРІРµ.
+
+--explain analyze
+--Seq Scan on film  (cost=0.00..67.50 rows=538 width=386) (actual time=0.010..0.455 rows=538 loops=1)
+--Planning time: 0.091 ms
+--Execution time: 0.495 ms
+select *
 from film 
 where special_features && array['Behind the Scenes']
 
-select film_id, title, special_features
+
+--explain analyze
+--Seq Scan on film  (cost=0.00..67.50 rows=995 width=386) (actual time=0.015..0.417 rows=538 loops=1)
+--Planning time: 0.089 ms
+--Execution time: 0.469 ms
+select *
 from film 
 where  array_position(special_features, 'Behind the Scenes') is not null
 
 
 
---ЗАДАНИЕ №3
---Для каждого покупателя посчитайте сколько он брал в аренду фильмов 
---со специальным атрибутом "Behind the Scenes.
+--Р—РђР”РђРќРР• в„–3
+--Р”Р»СЏ РєР°Р¶РґРѕРіРѕ РїРѕРєСѓРїР°С‚РµР»СЏ РїРѕСЃС‡РёС‚Р°Р№С‚Рµ СЃРєРѕР»СЊРєРѕ РѕРЅ Р±СЂР°Р» РІ Р°СЂРµРЅРґСѓ С„РёР»СЊРјРѕРІ 
+--СЃРѕ СЃРїРµС†РёР°Р»СЊРЅС‹Рј Р°С‚СЂРёР±СѓС‚РѕРј "Behind the Scenes.
 
---Обязательное условие для выполнения задания: используйте запрос из задания 1, 
---помещенный в CTE. CTE необходимо использовать для решения задания.
+--РћР±СЏР·Р°С‚РµР»СЊРЅРѕРµ СѓСЃР»РѕРІРёРµ РґР»СЏ РІС‹РїРѕР»РЅРµРЅРёСЏ Р·Р°РґР°РЅРёСЏ: РёСЃРїРѕР»СЊР·СѓР№С‚Рµ Р·Р°РїСЂРѕСЃ РёР· Р·Р°РґР°РЅРёСЏ 1, 
+--РїРѕРјРµС‰РµРЅРЅС‹Р№ РІ CTE. CTE РЅРµРѕР±С…РѕРґРёРјРѕ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ РґР»СЏ СЂРµС€РµРЅРёСЏ Р·Р°РґР°РЅРёСЏ.
 
-explain analyze /*Sort  (cost=893.15..894.65 rows=599 width=16) (actual time=9.690..9.721 rows=599 loops=1)*/
-with c1 as (
+explain analyze 
+-- (cost=806.32..807.82 rows=599 width=10) (actual time=8.070..8.097 rows=599 loops=1)
+--Planning time: 1.164 ms
+--Execution time: 8.308 ms
+with cte1 as (
 	select *
-	from film f2
-	where  array['Behind the Scenes'] <@ f2.special_features
+	from film
+	where  array['Behind the Scenes'] <@ special_features 
 )
-select c2.customer_id, count(rental_id) 
-from customer c2 
-    left join rental r using (customer_id)
-	join inventory i using (inventory_id)
-	join film f using (film_id)
-	join c1 on c1.film_id = f.film_id
-group by customer_id
-order by customer_id
+select 
+	r.customer_id
+	, count(r.rental_id) cnt_rental
+from rental r 
+join inventory i 
+	on r.inventory_id = i.inventory_id 
+join cte1
+	on cte1.film_id = i.film_id 
+group by r.customer_id
+order by r.customer_id
 
 
---ЗАДАНИЕ №4
---Для каждого покупателя посчитайте сколько он брал в аренду фильмов
--- со специальным атрибутом "Behind the Scenes".
 
---Обязательное условие для выполнения задания: используйте запрос из задания 1,
---помещенный в подзапрос, который необходимо использовать для решения задания.
+--Р—РђР”РђРќРР• в„–4
+--Р”Р»СЏ РєР°Р¶РґРѕРіРѕ РїРѕРєСѓРїР°С‚РµР»СЏ РїРѕСЃС‡РёС‚Р°Р№С‚Рµ СЃРєРѕР»СЊРєРѕ РѕРЅ Р±СЂР°Р» РІ Р°СЂРµРЅРґСѓ С„РёР»СЊРјРѕРІ
+-- СЃРѕ СЃРїРµС†РёР°Р»СЊРЅС‹Рј Р°С‚СЂРёР±СѓС‚РѕРј "Behind the Scenes".
 
-explain analyze /*Sort  (cost=819.51..821.01 rows=599 width=16) (actual time=14.487..14.533 rows=599 loops=1)*/
-select c2.customer_id, count(rental_id) 
-from customer c2 
+--РћР±СЏР·Р°С‚РµР»СЊРЅРѕРµ СѓСЃР»РѕРІРёРµ РґР»СЏ РІС‹РїРѕР»РЅРµРЅРёСЏ Р·Р°РґР°РЅРёСЏ: РёСЃРїРѕР»СЊР·СѓР№С‚Рµ Р·Р°РїСЂРѕСЃ РёР· Р·Р°РґР°РЅРёСЏ 1,
+--РїРѕРјРµС‰РµРЅРЅС‹Р№ РІ РїРѕРґР·Р°РїСЂРѕСЃ, РєРѕС‚РѕСЂС‹Р№ РЅРµРѕР±С…РѕРґРёРјРѕ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ РґР»СЏ СЂРµС€РµРЅРёСЏ Р·Р°РґР°РЅРёСЏ.
+
+
+explain analyze 
+--  (cost=673.96..675.46 rows=599 width=10) (actual time=9.622..9.648 rows=599 loops=1)
+--Planning time: 0.463 ms
+--Execution time: 9.729 ms
+select 
+	r.customer_id
+	, count(r.rental_id) cnt_rental
+from rental r 
+join inventory i 
+	on r.inventory_id = i.inventory_id 
+join (
+	select film_id
+	from film
+	where  array['Behind the Scenes'] <@ special_features 
+) tt
+	on tt.film_id = i.film_id 
+group by r.customer_id
+order by r.customer_id
+
+
+
+--Р—РђР”РђРќРР• в„–5
+--РЎРѕР·РґР°Р№С‚Рµ РјР°С‚РµСЂРёР°Р»РёР·РѕРІР°РЅРЅРѕРµ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ СЃ Р·Р°РїСЂРѕСЃРѕРј РёР· РїСЂРµРґС‹РґСѓС‰РµРіРѕ Р·Р°РґР°РЅРёСЏ
+--Рё РЅР°РїРёС€РёС‚Рµ Р·Р°РїСЂРѕСЃ РґР»СЏ РѕР±РЅРѕРІР»РµРЅРёСЏ РјР°С‚РµСЂРёР°Р»РёР·РѕРІР°РЅРЅРѕРіРѕ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёСЏ
+
+create materialized view task_5 as 
+	select distinct c2.customer_id, count(rental_id) over (partition by customer_id)
+	from customer c2 
     left join rental r using (customer_id)
 	join inventory i using (inventory_id)
 	join film f using (film_id)
 	join (select *
 		from film f2
 		where  array['Behind the Scenes'] <@ f2.special_features) as t on t.film_id = f.film_id
-group by customer_id
 order by customer_id
-
-
-
---ЗАДАНИЕ №5
---Создайте материализованное представление с запросом из предыдущего задания
---и напишите запрос для обновления материализованного представления
-
-create materialized view task_5 as 
-	select distinct c2.customer_id, count(rental_id) over (partition by customer_id)
-	from customer c2 
-	    left join rental r using (customer_id)
-		join inventory i using (inventory_id)
-		join film f using (film_id)
-		join (select *
-			from film f2
-			where  array['Behind the Scenes'] <@ f2.special_features) as t on t.film_id = f.film_id
-	order by customer_id
 with no data
 
 refresh materialized view task_5
 
---ЗАДАНИЕ №6
---С помощью explain analyze проведите анализ скорости выполнения запросов
--- из предыдущих заданий и ответьте на вопросы:
 
---1. Каким оператором или функцией языка SQL, используемых при выполнении домашнего задания, 
---   поиск значения в массиве происходит быстрее
---2. какой вариант вычислений работает быстрее: 
---   с использованием CTE или с использованием подзапроса
 
+--Р—РђР”РђРќРР• в„–6
+--РЎ РїРѕРјРѕС‰СЊСЋ explain analyze РїСЂРѕРІРµРґРёС‚Рµ Р°РЅР°Р»РёР· СЃС‚РѕРёРјРѕСЃС‚Рё РІС‹РїРѕР»РЅРµРЅРёСЏ Р·Р°РїСЂРѕСЃРѕРІ РёР· РїСЂРµРґС‹РґСѓС‰РёС… Р·Р°РґР°РЅРёР№ Рё РѕС‚РІРµС‚СЊС‚Рµ РЅР° РІРѕРїСЂРѕСЃС‹:
+--1. СЃ РєР°РєРёРј РѕРїРµСЂР°С‚РѕСЂРѕРј РёР»Рё С„СѓРЅРєС†РёРµР№ СЏР·С‹РєР° SQL, РёСЃРїРѕР»СЊР·СѓРµРјС‹РјРё РїСЂРё РІС‹РїРѕР»РЅРµРЅРёРё РґРѕРјР°С€РЅРµРіРѕ Р·Р°РґР°РЅРёСЏ: 
+--РїРѕРёСЃРє Р·РЅР°С‡РµРЅРёСЏ РІ РјР°СЃСЃРёРІРµ Р·Р°С‚СЂР°С‡РёРІР°РµС‚ РјРµРЅСЊС€Рµ СЂРµСЃСѓСЂСЃРѕРІ СЃРёСЃС‚РµРјС‹;
+--2. РєР°РєРѕР№ РІР°СЂРёР°РЅС‚ РІС‹С‡РёСЃР»РµРЅРёР№ Р·Р°С‚СЂР°С‡РёРІР°РµС‚ РјРµРЅСЊС€Рµ СЂРµСЃСѓСЂСЃРѕРІ СЃРёСЃС‚РµРјС‹: 
+--СЃ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµРј CTE РёР»Рё СЃ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµРј РїРѕРґР·Р°РїСЂРѕСЃР°.
+
+1/ Р’РѕР·РјРѕР¶РЅРѕ, СЃР»РёС€РєРѕРј РјР°Р»Рѕ РґР°РЅРЅС‹С…, РЅРѕ СЂР°Р·РЅРёС†С‹ РІ СЃС‚РѕРёРјРѕСЃС‚Рё Р·Р°РїСЂРѕСЃРѕРІ Рё РІРѕ РІСЂРµРјРµРЅРё СЏ РЅРµ РІРёР¶Сѓ.
+
+2/ РСЃРїРѕР»СЊР·РѕРІР°РЅРёРµ РїРѕРґР·Р°РїСЂРѕСЃР° СѓРјРµРЅСЊС€Р°РµС‚ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµ СЂРµСЃСѓСЂСЃРѕРІ.
+
+--======== Р”РћРџРћР›РќРРўР•Р›Р¬РќРђРЇ Р§РђРЎРўР¬ ==============
+
+--Р—РђР”РђРќРР• в„–1
+--Р’С‹РїРѕР»РЅСЏР№С‚Рµ СЌС‚Рѕ Р·Р°РґР°РЅРёРµ РІ С„РѕСЂРјРµ РѕС‚РІРµС‚Р° РЅР° СЃР°Р№С‚Рµ РќРµС‚РѕР»РѕРіРёРё
 /*
-Доработка!)))
-запрос с сте
-Sort  (cost=893.15..894.65 rows=599 width=16) (actual time=9.690..9.721 rows=599 loops=1)
-запрос с подзапросом
-Sort  (cost=819.51..821.01 rows=599 width=16) (actual time=14.487..14.533 rows=599 loops=1)
-
-Если я опять-таки правильно понимаю, то: 
-запрос с сте стоит немного дороже, но по времени работает быстрее запроса с подзапросом.
-запрос с подзапросом чуть дешевле запроса с с сте, но примерно в 1,5 раза больше по времени
-
-*/
-
---======== ДОПОЛНИТЕЛЬНАЯ ЧАСТЬ ==============
-
---ЗАДАНИЕ №1
---Выполняйте это задание в форме ответа на сайте Нетологии
-
---ЗАДАНИЕ №2
---Используя оконную функцию выведите для каждого сотрудника
---сведения о самой первой продаже этого сотрудника.
+РЎРґРµР»Р°Р№С‚Рµ explain analyze СЌС‚РѕРіРѕ Р·Р°РїСЂРѕСЃР°.
+РћСЃРЅРѕРІС‹РІР°СЏСЃСЊ РЅР° РѕРїРёСЃР°РЅРёРё Р·Р°РїСЂРѕСЃР°, РЅР°Р№РґРёС‚Рµ СѓР·РєРёРµ РјРµСЃС‚Р° Рё РѕРїРёС€РёС‚Рµ РёС….
+РЎСЂР°РІРЅРёС‚Рµ СЃ РІР°С€РёРј Р·Р°РїСЂРѕСЃРѕРј РёР· РѕСЃРЅРѕРІРЅРѕР№ С‡Р°СЃС‚Рё (РµСЃР»Рё РІР°С€ Р·Р°РїСЂРѕСЃ РёР·РЅР°С‡Р°Р»СЊРЅРѕ СѓРєР»Р°РґС‹РІР°РµС‚СЃСЏ РІ 15РјСЃ вЂ” РѕС‚Р»РёС‡РЅРѕ!).
+РЎРґРµР»Р°Р№С‚Рµ РїРѕСЃС‚СЂРѕС‡РЅРѕРµ РѕРїРёСЃР°РЅРёРµ explain analyze РЅР° СЂСѓСЃСЃРєРѕРј СЏР·С‹РєРµ РѕРїС‚РёРјРёР·РёСЂРѕРІР°РЅРЅРѕРіРѕ Р·Р°РїСЂРѕСЃР°. 
+РћРїРёСЃР°РЅРёРµ СЃС‚СЂРѕРє РІ explain РјРѕР¶РЅРѕ РїРѕСЃРјРѕС‚СЂРµС‚СЊ РїРѕ СЃСЃС‹Р»РєРµ.
+https://use-the-index-luke.com/
+ */
 
 
+explain analyze
+select distinct cu.first_name  || ' ' || cu.last_name as name, 
+	count(ren.iid) over (partition by cu.customer_id)
+from customer cu
+full outer join 
+	(select *, r.inventory_id as iid, inv.sf_string as sfs, r.customer_id as cid
+	from rental r 
+	full outer join 
+		(select *, unnest(f.special_features) as sf_string
+		from inventory i
+		full outer join film f on f.film_id = i.film_id) as inv 
+		on r.inventory_id = inv.inventory_id) as ren 
+	on ren.cid = cu.customer_id 
+where ren.sfs like '%Behind the Scenes%'
+order by count desc
+
+
+РћСЃРЅРѕРІС‹РІР°СЏСЃСЊ РЅР° РѕРїРёСЃР°РЅРёРё Р·Р°РїСЂРѕСЃР°, РјРѕР¶РЅРѕ РІС‹РґРµР»РёС‚СЊ СЃР»РµРґСѓСЋС‰РёРµ СѓР·РєРёРµ РјРµСЃС‚Р°:
+1. РЈР·РєРѕРµ РјРµСЃС‚Рѕ - СЌС‚Рѕ unnest
+
+2. РЎРѕСЂС‚РёСЂРѕРІРєР° Рё РѕРєРѕРЅРЅС‹Рµ С„СѓРЅРєС†РёРё:
+   - Р—Р°РїСЂРѕСЃ РІС‹РїРѕР»РЅСЏРµС‚ СЃР»РѕР¶РЅСѓСЋ СЃРѕСЂС‚РёСЂРѕРІРєСѓ СЃ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµРј РѕРєРѕРЅРЅС‹С… С„СѓРЅРєС†РёР№, С‡С‚Рѕ Р·Р°РЅРёРјР°РµС‚ Р·РЅР°С‡РёС‚РµР»СЊРЅРѕРµ РІСЂРµРјСЏ
+   Unique  (cost=8599.88..8600.22 rows=46 width=44) (actual time=34.096..35.259 rows=600 loops=1)
+   - Р­С‚Рѕ РјРѕР¶РµС‚ Р±С‹С‚СЊ СѓР·РєРёРј РјРµСЃС‚РѕРј, РѕСЃРѕР±РµРЅРЅРѕ РµСЃР»Рё РєРѕР»РёС‡РµСЃС‚РІРѕ СЃС‚СЂРѕРє, С‚СЂРµР±СѓСЋС‰РёС… СЃРѕСЂС‚РёСЂРѕРІРєРё, РІРµР»РёРєРѕ.
+3. Р’Р»РѕР¶РµРЅРЅС‹Рµ Р·Р°РїСЂРѕСЃС‹ Рё СЃРѕРµРґРёРЅРµРЅРёСЏ:
+   - Р—Р°РїСЂРѕСЃ СЃРѕРґРµСЂР¶РёС‚ РІР»РѕР¶РµРЅРЅС‹Рµ Р·Р°РїСЂРѕСЃС‹ Рё СЃР»РѕР¶РЅС‹Рµ СЃРѕРµРґРёРЅРµРЅРёСЏ С‚Р°Р±Р»РёС†, С‡С‚Рѕ РјРѕР¶РµС‚ Р·Р°РјРµРґР»СЏС‚СЊ РѕР±С‰РµРµ РІСЂРµРјСЏ РІС‹РїРѕР»РЅРµРЅРёСЏ.
+   - РќР°РїСЂРёРјРµСЂ, Hash Right Join (cost=8212.07..8582.70 rows=46 width=6) (actual time=6.632..10.948 rows=8632 loops=1)
+     Рё Nested Loop Left Join (cost=8212.35..8596.30 rows=46 width=21) (actual time=6.661..22.642 rows=8632 loops=1)
+     РґРѕСЂРѕРіРѕСЃС‚РѕСЏС‰РёРµ. Р РјРѕРіСѓС‚ Р±С‹С‚СЊ РјРµРґР»РµРЅРЅС‹РјРё, РѕСЃРѕР±РµРЅРЅРѕ РµСЃР»Рё С‚Р°Р±Р»РёС†С‹ Р±РѕР»СЊС€РёРµ РёР»Рё СѓСЃР»РѕРІРёСЏ СЃРѕРµРґРёРЅРµРЅРёСЏ РЅРµРѕРїС‚РёРјР°Р»СЊРЅС‹.
+
+4. Р¤РёР»СЊС‚СЂР°С†РёСЏ РґР°РЅРЅС‹С…:
+   - Р—Р°РїСЂРѕСЃ СЃРѕРґРµСЂР¶РёС‚ С„РёР»СЊС‚СЂР°С†РёСЋ РґР°РЅРЅС‹С… РїРѕ СЃС‚РѕР»Р±С†Сѓ `sf_string`, С‡С‚Рѕ РјРѕР¶РµС‚ Р±С‹С‚СЊ РјРµРґР»РµРЅРЅС‹Рј, РµСЃР»Рё РёРЅРґРµРєСЃ 
+     РЅР° СЌС‚РѕРј СЃС‚РѕР»Р±С†Рµ РѕС‚СЃСѓС‚СЃС‚РІСѓРµС‚ РёР»Рё РЅРµСЌС„С„РµРєС‚РёРІРµРЅ.
+   - Р­С‚Рѕ РјРѕР¶РµС‚ Р±С‹С‚СЊ СѓР·РєРёРј РјРµСЃС‚РѕРј, РµСЃР»Рё С„РёР»СЊС‚СЂР°С†РёСЏ Р·Р°С‚СЂР°РіРёРІР°РµС‚ Р±РѕР»СЊС€РѕРµ РєРѕР»РёС‡РµСЃС‚РІРѕ СЃС‚СЂРѕРє.
+
+5. РСЃРїРѕР»СЊР·РѕРІР°РЅРёРµ РїР°РјСЏС‚Рё:
+   - Р—Р°РїСЂРѕСЃ РёСЃРїРѕР»СЊР·СѓРµС‚ Р·РЅР°С‡РёС‚РµР»СЊРЅРѕРµ РєРѕР»РёС‡РµСЃС‚РІРѕ РїР°РјСЏС‚Рё РґР»СЏ СЃРѕСЂС‚РёСЂРѕРІРєРё Рё С…РµС€РёСЂРѕРІР°РЅРёСЏ, 
+     С‡С‚Рѕ РјРѕР¶РµС‚ Р±С‹С‚СЊ РїСЂРѕР±Р»РµРјРѕР№ РЅР° СЃРёСЃС‚РµРјР°С… СЃ РѕРіСЂР°РЅРёС‡РµРЅРЅС‹РјРё СЂРµСЃСѓСЂСЃР°РјРё.
+   - Р­С‚Рѕ РјРѕР¶РµС‚ Р±С‹С‚СЊ СѓР·РєРёРј РјРµСЃС‚РѕРј, РµСЃР»Рё СЃРёСЃС‚РµРјР° РЅРµ РјРѕР¶РµС‚ РІС‹РґРµР»РёС‚СЊ РґРѕСЃС‚Р°С‚РѕС‡РЅРѕ РїР°РјСЏС‚Рё РґР»СЏ РІС‹РїРѕР»РЅРµРЅРёСЏ Р·Р°РїСЂРѕСЃР°.
+
+
+--Р—РђР”РђРќРР• в„–2
+--РСЃРїРѕР»СЊР·СѓСЏ РѕРєРѕРЅРЅСѓСЋ С„СѓРЅРєС†РёСЋ РІС‹РІРµРґРёС‚Рµ РґР»СЏ РєР°Р¶РґРѕРіРѕ СЃРѕС‚СЂСѓРґРЅРёРєР°
+--СЃРІРµРґРµРЅРёСЏ Рѕ СЃР°РјРѕР№ РїРµСЂРІРѕР№ РїСЂРѕРґР°Р¶Рµ СЌС‚РѕРіРѕ СЃРѕС‚СЂСѓРґРЅРёРєР°.
+with all_sales as (
+	select p.staff_id
+		, p.rental_id 
+		, p.customer_id
+		, p.amount 
+		, p.payment_date
+		--, row_number() over (partition by p.staff_id order by p.payment_date) rn
+		, dense_rank() over (partition by p.staff_id order by p.payment_date) dr
+		--row_number() РЅРµ СЃРѕРІСЃРµРј РїРѕРґС…РѕРґРёС‚, С‚Р°Рє РєР°Рє Р·Р° РѕРґРЅСѓ РёС‚СЂРµР°С†РёСЋ СЃРѕС‚СЂСѓРґРЅРёРє РјРѕР¶РµС‚ СЃРґРµР»Р°С‚СЊ
+		-- РЅРµСЃРєРѕР»СЊРєРѕ РїСЂРѕРґР°Р¶. РќР°РїСЂРёРјРµСЂ rental_id in (3005, 3006)  СЃРѕРІРµСЂС€РµРЅС‹ СЃРѕС‚СЂСѓРґРЅРёРєРѕРј1 РІ РѕРґРЅРѕ Рё С‚РѕР¶Рµ РІСЂРµРјСЏ. 
+	from payment p 
+)
+select 
+	p.staff_id
+	, p.rental_id 
+	, p.customer_id
+	, p.amount 
+	, p.payment_date
+from all_sales p
+where dr = 1
+
+
+--Р—РђР”РђРќРР• в„–3
+--Р”Р»СЏ РєР°Р¶РґРѕРіРѕ РјР°РіР°Р·РёРЅР° РѕРїСЂРµРґРµР»РёС‚Рµ Рё РІС‹РІРµРґРёС‚Рµ РѕРґРЅРёРј SQL-Р·Р°РїСЂРѕСЃРѕРј СЃР»РµРґСѓСЋС‰РёРµ Р°РЅР°Р»РёС‚РёС‡РµСЃРєРёРµ РїРѕРєР°Р·Р°С‚РµР»Рё:
+-- 1. РґРµРЅСЊ, РІ РєРѕС‚РѕСЂС‹Р№ Р°СЂРµРЅРґРѕРІР°Р»Рё Р±РѕР»СЊС€Рµ РІСЃРµРіРѕ С„РёР»СЊРјРѕРІ (РґРµРЅСЊ РІ С„РѕСЂРјР°С‚Рµ РіРѕРґ-РјРµСЃСЏС†-РґРµРЅСЊ)
+-- 2. РєРѕР»РёС‡РµСЃС‚РІРѕ С„РёР»СЊРјРѕРІ РІР·СЏС‚С‹С… РІ Р°СЂРµРЅРґСѓ РІ СЌС‚РѕС‚ РґРµРЅСЊ
+-- 3. РґРµРЅСЊ, РІ РєРѕС‚РѕСЂС‹Р№ РїСЂРѕРґР°Р»Рё С„РёР»СЊРјРѕРІ РЅР° РЅР°РёРјРµРЅСЊС€СѓСЋ СЃСѓРјРјСѓ (РґРµРЅСЊ РІ С„РѕСЂРјР°С‚Рµ РіРѕРґ-РјРµСЃСЏС†-РґРµРЅСЊ)
+-- 4. СЃСѓРјРјСѓ РїСЂРѕРґР°Р¶Рё РІ СЌС‚РѕС‚ РґРµРЅСЊ
+
+
+with general_ as (
+	select 
+		i.store_id 
+		, p.payment_date::date
+		, count(i.film_id) film_cnt
+		, sum(p.amount) amount
+	from rental r 
+	join inventory i 
+		on r.inventory_id = i.inventory_id 
+	left join payment p 
+		on r.rental_id = p.rental_id 
+	group by i.store_id 
+		, p.payment_date::date
+)
+,
+find as (
+select 
+	*
+	, first_value (payment_date) over (partition by store_id order by film_cnt desc) max_cnt_rental_date
+	, first_value (payment_date) over (partition by store_id order by amount asc) min_sum_rental_date
+from general_
+)
+select 
+	find.store_id
+	, find.film_cnt
+	, find.max_cnt_rental_date
+	--
+	, mini.amount
+	, mini.min_sum_rental_date
+from find
+join (
+	select 
+	store_id
+	, amount
+	, min_sum_rental_date
+	from find
+	where min_sum_rental_date = payment_date 
+) mini
+	on find.store_id = mini.store_id
+where find.max_cnt_rental_date = find.payment_date
 
 
 
---ЗАДАНИЕ №3
---Для каждого магазина определите и выведите одним SQL-запросом следующие аналитические показатели:
--- 1. день, в который арендовали больше всего фильмов (день в формате год-месяц-день)
--- 2. количество фильмов взятых в аренду в этот день
--- 3. день, в который продали фильмов на наименьшую сумму (день в формате год-месяц-день)
--- 4. сумму продажи в этот день
-
-
-
-
+with general_ as (
+	select 
+		i.store_id 
+		, p.payment_date::date
+		, count(i.film_id) film_cnt
+		, sum(p.amount) amount
+	from rental r 
+	join inventory i 
+		on r.inventory_id = i.inventory_id 
+	left join payment p 
+		on r.rental_id = p.rental_id 
+	group by i.store_id 
+		, p.payment_date::date
+)
+, min_sum as (
+	select 
+		*
+		, dense_rank () over (partition by store_id order by amount asc) dr
+	from general_
+)
+, max_cnt as (
+	select 
+		*
+		, dense_rank () over (partition by store_id order by film_cnt desc) dr
+	from general_
+)
+select
+	max_cnt.store_id
+	, film_cnt
+	, max_cnt.payment_date max_cnt_date
+	--
+	, min_sum.amount
+	, min_sum.payment_date 
+from max_cnt 
+join ( 
+	select 
+	min_sum.store_id
+	, min_sum.amount
+	, min_sum.payment_date 
+	from min_sum
+	where min_sum.dr = 1
+) min_sum
+on max_cnt.store_id = min_sum.store_id
+where max_cnt.dr = 1
